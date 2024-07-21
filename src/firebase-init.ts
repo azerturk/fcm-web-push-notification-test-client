@@ -1,43 +1,34 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { fetchFirebaseToken } from "./messaging-get-token";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: "training-diary-e5a05",
-  storageBucket: "training-diary-e5a05.appspot.com",
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+initializeApp(firebaseConfig);
 
-async function requestPermission() {
-  const permission = await Notification.requestPermission();
-  if (permission === "denied") {
-    return;
-  }
+function requestPermission() {
+  console.log('Requesting permission...');
+  Notification.requestPermission().then((permission) => {
+    if (permission === 'granted') {
+      console.log('Notification permission granted.');
 
-  const token = await getToken(messaging, {
-    vapidKey: process.env.VAPID_KEY,
-  });
-
-  if (token) {
-    console.log("token", token);
-  } else {
-    console.log("Can't get token");
-  }
-
-  onMessage(messaging, (payload) => {
-    console.log("Message received. ", payload);
+      // TODO(developer): Retrieve a registration token for use with FCM.
+      fetchFirebaseToken();
+    }
   });
 }
 
