@@ -37,7 +37,6 @@ function requestPermission() {
       navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Vibration Sample", {
           body: "Buzz! Buzz!",
-          icon: "../images/touch/chrome-touch-icon-192x192.png",
           tag: "vibration-sample",
         });
       });
