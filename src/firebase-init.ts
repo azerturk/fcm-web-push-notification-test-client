@@ -1,6 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { fetchFirebaseToken } from "./messaging-get-token";
+import { getMessaging } from "firebase/messaging";
+import { onMessage } from "firebase/messaging";
+import { onBackgroundMessage } from "firebase/messaging/sw";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -18,7 +21,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+
+const messaging = getMessaging(app);
 
 function requestPermission() {
   console.log('Requesting permission...');
