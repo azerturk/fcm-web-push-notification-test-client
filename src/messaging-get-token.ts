@@ -1,5 +1,16 @@
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
+// This is self invoking function that listen of the notification
+const onMessageListener = (async () => {
+  console.log("dsds");
+  const messagingResolve = await getMessaging();
+  if (messagingResolve) {
+    onMessage(messagingResolve, (payload) => {
+      console.log('Message received. ', payload);
+    });
+  }
+})();
+
 // Get registration token. Initially this makes a network call, once retrieved
 // subsequent calls to getToken will return from cache.
 const fetchFirebaseToken = () => {
@@ -12,16 +23,6 @@ const fetchFirebaseToken = () => {
       // Show permission request UI
       console.log('No registration token available. Request permission to generate one.');
     }
-
-    // This is self invoking function that listen of the notification
-    const onMessageListener = (async () => {
-      const messagingResolve = await messaging;
-      if (messagingResolve) {
-        onMessage(messagingResolve, (payload) => {
-          console.log('Message received. ', payload);
-        });
-      }
-    })();
   }).catch((err) => {
     console.log('An error occurred while retrieving token. ', err);
   })
