@@ -1,4 +1,4 @@
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 // Get registration token. Initially this makes a network call, once retrieved
 // subsequent calls to getToken will return from cache.
@@ -12,6 +12,7 @@ const fetchFirebaseToken = () => {
       // Show permission request UI
       console.log('No registration token available. Request permission to generate one.');
     }
+
     onMessage(messaging, (payload) => {
       console.log('Message received. ', payload);
       // ...
