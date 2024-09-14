@@ -1,6 +1,3 @@
-importScripts('https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging.js');
-
 self.addEventListener("install", function (e) {
   console.log("fcm sw install..");
   self.skipWaiting();

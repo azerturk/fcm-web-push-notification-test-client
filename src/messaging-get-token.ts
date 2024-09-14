@@ -13,10 +13,15 @@ const fetchFirebaseToken = () => {
       console.log('No registration token available. Request permission to generate one.');
     }
 
-    onMessage(messaging, (payload) => {
-      console.log('Message received. ', payload);
-      // ...
-    });
+    // This is self invoking function that listen of the notification
+    const onMessageListener = (async () => {
+      const messagingResolve = await messaging;
+      if (messagingResolve) {
+        onMessage(messagingResolve, (payload) => {
+          console.log('Message received. ', payload);
+        });
+      }
+    })();
   }).catch((err) => {
     console.log('An error occurred while retrieving token. ', err);
   })
