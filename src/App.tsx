@@ -4,6 +4,7 @@ import './App.css';
 import './firebase-init';
 import { getMessaging, onMessage } from 'firebase/messaging';
 import { onBackgroundMessage } from 'firebase/messaging/sw';
+import NotificationButton from './NotificationButton';
 
 function App() {
 
@@ -13,7 +14,7 @@ function App() {
     onMessage(messaging, (payload) => {
       console.log('Message received. ', payload);
     });
-      //self.registration.showNotification(notificationTitle, notificationOptions);    
+    //self.registration.showNotification(notificationTitle, notificationOptions);    
   });
 
   return (
@@ -31,6 +32,7 @@ function App() {
         >
           Learn React
         </a>
+        <NotificationButton />
       </header>
     </div>
   );
