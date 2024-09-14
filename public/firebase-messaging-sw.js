@@ -10,7 +10,7 @@ self.addEventListener("activate", function (e) {
 self.addEventListener("push", function (e) {
   console.log("push: ", e.data.json());
 
-  const resultData = e.data.json().notification;
+  const resultData = e.data.json().data;
   const notificationTitle = resultData.body;
   const notificationOptions = {
     body: resultData.body,
