@@ -31,7 +31,7 @@ function requestPermission() {
     if (permission === 'granted') {
       console.log('Notification permission granted.');
 
-      navigator.serviceWorker.register("/firebase-messaging-sw.js", { scope: "/firebase-cloud-messaging-push-scope" })
+      navigator.serviceWorker.register("/firebase-messaging-sw.js")
 
       // TODO(developer): Retrieve a registration token for use with FCM.
       fetchFirebaseToken();
@@ -49,12 +49,12 @@ function requestPermission() {
       });
 
 
-      navigator.serviceWorker.ready.then((registration) => {
+      /* navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Vibration Sample", {
           body: "Buzz! Buzz!",
           tag: "vibration-sample",
         });
-      });
+      }); */
     }
   });
 }
