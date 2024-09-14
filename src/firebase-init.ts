@@ -31,6 +31,8 @@ function requestPermission() {
     if (permission === 'granted') {
       console.log('Notification permission granted.');
 
+      navigator.serviceWorker.register("/firebase-messaging-sw.js", { scope: "/firebase-cloud-messaging-push-scope" })
+
       // TODO(developer): Retrieve a registration token for use with FCM.
       fetchFirebaseToken();
 
