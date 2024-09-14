@@ -36,6 +36,18 @@ function requestPermission() {
       // TODO(developer): Retrieve a registration token for use with FCM.
       fetchFirebaseToken();
 
+      onMessage(messaging, (payload) => {
+        console.log('Foreground Message received: ', payload);
+
+        // Optional: Show notification manually
+        /* if (Notification.permission === 'granted' && payload.notification) {
+          new Notification(payload.notification.title, {
+            body: payload.notification.body,
+            icon: payload.notification.icon,
+          });
+        } */
+      });
+
 
       navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Vibration Sample", {
@@ -48,14 +60,3 @@ function requestPermission() {
 }
 
 requestPermission();
-
-// This is self invoking function that listen of the notification
-const onMessageListener = (async () => {
-  console.log("dsds");
-  const messagingResolve = await messaging;
-  if (messagingResolve) {
-    onMessage(messagingResolve, (payload) => {
-      console.log('Message received. ', payload);
-    });
-  }
-})();
