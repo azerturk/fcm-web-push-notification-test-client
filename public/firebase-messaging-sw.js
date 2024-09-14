@@ -11,11 +11,11 @@ self.addEventListener("push", function (e) {
   console.log("push: ", e.data.json());
 
   const resultData = e.data.json().notification;
-  const notificationTitle = resultData.title;
+  const notificationTitle = resultData.body;
   const notificationOptions = {
     body: resultData.body,
-    icon: resultData.image,
-    tag: resultData.tag,
+    icon: "",
+    tag: "",
     ...resultData,
   };
   console.log("push: ", { resultData, notificationTitle, notificationOptions });
