@@ -1,8 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { fetchFirebaseToken } from "./messaging-get-token";
-import { getMessaging } from "firebase/messaging";
-import { onMessage } from "firebase/messaging";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { onBackgroundMessage } from "firebase/messaging/sw";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -27,33 +26,33 @@ const messaging = getMessaging(app);
 
 async function requestPermission() {
 
-  try {
-    console.log('Requesting permission...');
+  const permission = await Notification.requestPermission();
 
-    const permission = await Notification.requestPermission();
+  if (permission === 'granted') {
+    console.log('Notification permission granted.');
+    // TODO(developer): Retrieve a registration token for use with FCM.
 
-    if (permission === 'granted') {
-      console.log('Notification permission granted.');
-      // TODO(developer): Retrieve a registration token for use with FCM.
+    /*       const registrationRemove = await navigator.serviceWorker.getRegistrations().then((registrations) => {
+            registrations.forEach((registration) => registration.unregister());
+          }); */
 
-      const registrationRemove = await navigator.serviceWorker.getRegistrations().then((registrations) => {
-        registrations.forEach((registration) => registration.unregister());
+    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+
+    // Wait for serviceWorker.ready
+    await navigator.serviceWorker.ready
+
+    getToken(messaging, { serviceWorkerRegistration: registration, vapidKey: process.env.REACT_APP_VAPID_KEY }).then((currentToken) => {
+      if (currentToken) {
+        // Send the token to your server and update the UI if necessary
+        console.log(currentToken);
+      } else {
+        // Show permission request UI
+        console.log('No registration token available. Request permission to generate one.');
+      }
+
+      onMessage(messaging, (payload) => {
+        console.log('Foreground Message received: ', payload);
       });
-
-      const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js')
-        .then((registration) => {
-          console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch((error) => {
-          console.log('Service Worker registration failed:', error);
-        });
-
-      // Wait for the service worker to be fully ready
-      await navigator.serviceWorker.ready;
-
-      setTimeout(() => {
-        fetchFirebaseToken();
-      }, 3000);
 
       /* navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Vibration Sample", {
@@ -61,10 +60,7 @@ async function requestPermission() {
           tag: "vibration-sample",
         });
       }); */
-    }
-
-  } catch (err) {
-    console.error('Error registering service worker or fetching token:', err);
+    });
   }
 }
 
