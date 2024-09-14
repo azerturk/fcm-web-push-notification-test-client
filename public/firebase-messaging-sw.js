@@ -1,31 +1,33 @@
-importScripts(
-  "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js"
-);
-importScripts(
-  "https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging.js"
-);
+// firebase-messaging-sw.js
 
-self.addEventListener("install", function (e) {
-  console.log("fcm sw install..");
-  self.skipWaiting();
-});
+importScripts("https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging-compat.js");
 
-self.addEventListener("activate", function (e) {
-  console.log("fcm sw activate..");
-});
+// Initialize Firebase inside the service worker
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+};
 
-self.addEventListener("push", function (e) {
-  console.log("push: ", e.data.json());
+firebase.initializeApp(firebaseConfig);
 
-  const resultData = e.data.json().data;
-  const notificationTitle = resultData.body;
+const messaging = firebase.messaging();
+
+// Handle background messages
+messaging.onBackgroundMessage(function (payload) {
+  console.log("Received background message: ", payload);
+
+  const notificationTitle = payload.data.title;
   const notificationOptions = {
-    body: resultData.body,
-    icon: "",
-    tag: "",
-    ...resultData,
+    body: payload.data.body,
+    icon: "", // You can change this to your app's icon
   };
-  console.log("push: ", { resultData, notificationTitle, notificationOptions });
 
+  // Show the notification
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
