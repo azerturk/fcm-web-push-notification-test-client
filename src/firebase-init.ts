@@ -48,8 +48,3 @@ function requestPermission() {
 }
 
 requestPermission();
-
-onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload);
-  // ...
-});
