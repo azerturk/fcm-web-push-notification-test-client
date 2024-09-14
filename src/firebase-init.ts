@@ -36,6 +36,7 @@ function requestPermission() {
       // TODO(developer): Retrieve a registration token for use with FCM.
       fetchFirebaseToken();
 
+
       navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Vibration Sample", {
           body: "Buzz! Buzz!",
@@ -47,3 +48,8 @@ function requestPermission() {
 }
 
 requestPermission();
+
+onMessage(messaging, (payload) => {
+  console.log('Message received. ', payload);
+  // ...
+});
