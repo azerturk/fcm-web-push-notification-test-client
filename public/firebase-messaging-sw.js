@@ -5,13 +5,13 @@ importScripts("https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging-com
 
 // Initialize Firebase inside the service worker
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyAp4KFoOmqph7rhxKPGk8U0vokikcvmOQ0",
+  authDomain: "test-fcm-1f216.firebaseapp.com",
+  projectId: "test-fcm-1f216",
+  storageBucket: "test-fcm-1f216.appspot.com",
+  messagingSenderId: "37178266676",
+  appId: "1:37178266676:web:41f22f0483d74c9baf2661",
+  measurementId: "G-GMMBHKRQDS",
 };
 
 firebase.initializeApp(firebaseConfig);
