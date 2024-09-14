@@ -31,6 +31,10 @@ function requestPermission() {
     if (permission === 'granted') {
       console.log('Notification permission granted.');
 
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        registrations.forEach((registration) => registration.unregister());
+      });
+
       navigator.serviceWorker.register('/firebase-messaging-sw.js')
         .then((registration) => {
           console.log('Service Worker registered with scope:', registration.scope);
