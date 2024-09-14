@@ -6,7 +6,7 @@ const NotificationButton: React.FC = () => {
 
     const handleButtonClick = async () => {
         const permission = await requestPermission();
-        setPermission(permission);
+        setPermission(permission); // This will now work correctly
     };
 
     return (

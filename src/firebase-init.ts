@@ -60,6 +60,8 @@ export async function requestPermission() {
       }); */
     });
   }
+
+  return permission;
 }
 
 //requestPermission();
