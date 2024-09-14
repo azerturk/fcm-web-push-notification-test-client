@@ -30,27 +30,28 @@ async function requestPermission() {
   try {
     console.log('Requesting permission...');
 
-    const registrationRemove = await navigator.serviceWorker.getRegistrations().then((registrations) => {
-      registrations.forEach((registration) => registration.unregister());
-    });
-
-    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js')
-      .then((registration) => {
-        console.log('Service Worker registered with scope:', registration.scope);
-      })
-      .catch((error) => {
-        console.log('Service Worker registration failed:', error);
-      });
-
-    // Wait for the service worker to be fully ready
-    await navigator.serviceWorker.ready;
-
     const permission = await Notification.requestPermission();
 
     if (permission === 'granted') {
       console.log('Notification permission granted.');
       // TODO(developer): Retrieve a registration token for use with FCM.
-      const token = await fetchFirebaseToken();
+
+      const registrationRemove = await navigator.serviceWorker.getRegistrations().then((registrations) => {
+        registrations.forEach((registration) => registration.unregister());
+      });
+
+      const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js')
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((error) => {
+          console.log('Service Worker registration failed:', error);
+        });
+
+      // Wait for the service worker to be fully ready
+      await navigator.serviceWorker.ready;
+
+      fetchFirebaseToken();
 
       /* navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Vibration Sample", {
