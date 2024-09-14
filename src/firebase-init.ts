@@ -48,3 +48,14 @@ function requestPermission() {
 }
 
 requestPermission();
+
+// This is self invoking function that listen of the notification
+const onMessageListener = (async () => {
+  console.log("dsds");
+  const messagingResolve = await messaging;
+  if (messagingResolve) {
+    onMessage(messagingResolve, (payload) => {
+      console.log('Message received. ', payload);
+    });
+  }
+})();

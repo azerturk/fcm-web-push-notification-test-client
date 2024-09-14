@@ -1,15 +1,4 @@
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
-
-// This is self invoking function that listen of the notification
-const onMessageListener = (async () => {
-  console.log("dsds");
-  const messagingResolve = await getMessaging();
-  if (messagingResolve) {
-    onMessage(messagingResolve, (payload) => {
-      console.log('Message received. ', payload);
-    });
-  }
-})();
+import { getMessaging, getToken } from "firebase/messaging";
 
 // Get registration token. Initially this makes a network call, once retrieved
 // subsequent calls to getToken will return from cache.
