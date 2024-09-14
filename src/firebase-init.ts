@@ -31,23 +31,15 @@ function requestPermission() {
     if (permission === 'granted') {
       console.log('Notification permission granted.');
 
-      navigator.serviceWorker.register("/firebase-messaging-sw.js")
-
+      navigator.serviceWorker.register('/firebase-messaging-sw.js')
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((error) => {
+          console.log('Service Worker registration failed:', error);
+        });
       // TODO(developer): Retrieve a registration token for use with FCM.
       fetchFirebaseToken();
-
-      onMessage(messaging, (payload) => {
-        console.log('Foreground Message received: ', payload);
-
-        // Optional: Show notification manually
-        /* if (Notification.permission === 'granted' && payload.notification) {
-          new Notification(payload.notification.title, {
-            body: payload.notification.body,
-            icon: payload.notification.icon,
-          });
-        } */
-      });
-
 
       /* navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Vibration Sample", {

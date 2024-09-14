@@ -12,6 +12,18 @@ const fetchFirebaseToken = () => {
       // Show permission request UI
       console.log('No registration token available. Request permission to generate one.');
     }
+
+    onMessage(messaging, (payload) => {
+      console.log('Foreground Message received: ', payload);
+
+      // Optional: Show notification manually
+      /* if (Notification.permission === 'granted' && payload.notification) {
+        new Notification(payload.notification.title, {
+          body: payload.notification.body,
+          icon: payload.notification.icon,
+        });
+      } */
+    });
   }).catch((err) => {
     console.log('An error occurred while retrieving token. ', err);
   })
