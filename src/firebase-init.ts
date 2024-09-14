@@ -25,26 +25,32 @@ const app = initializeApp(firebaseConfig);
 
 const messaging = getMessaging(app);
 
-function requestPermission() {
-  console.log('Requesting permission...');
+async function requestPermission() {
 
-  navigator.serviceWorker.getRegistrations().then((registrations) => {
-    registrations.forEach((registration) => registration.unregister());
-  });
+  try {
+    console.log('Requesting permission...');
 
-  navigator.serviceWorker.register('/firebase-messaging-sw.js')
-    .then((registration) => {
-      console.log('Service Worker registered with scope:', registration.scope);
-    })
-    .catch((error) => {
-      console.log('Service Worker registration failed:', error);
+    const registrationRemove = await navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => registration.unregister());
     });
 
-  Notification.requestPermission().then((permission) => {
+    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then((registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch((error) => {
+        console.log('Service Worker registration failed:', error);
+      });
+
+    // Wait for the service worker to be fully ready
+    await navigator.serviceWorker.ready;
+
+    const permission = await Notification.requestPermission();
+
     if (permission === 'granted') {
       console.log('Notification permission granted.');
       // TODO(developer): Retrieve a registration token for use with FCM.
-      fetchFirebaseToken();
+      const token = await fetchFirebaseToken();
 
       /* navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Vibration Sample", {
@@ -53,7 +59,10 @@ function requestPermission() {
         });
       }); */
     }
-  });
+
+  } catch (err) {
+    console.error('Error registering service worker or fetching token:', err);
+  }
 }
 
 requestPermission();
