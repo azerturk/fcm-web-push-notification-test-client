@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { fetchFirebaseToken } from "./messaging-get-token";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { onBackgroundMessage } from "firebase/messaging/sw";
 
