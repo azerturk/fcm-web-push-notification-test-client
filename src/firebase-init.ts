@@ -51,7 +51,9 @@ async function requestPermission() {
       // Wait for the service worker to be fully ready
       await navigator.serviceWorker.ready;
 
-      fetchFirebaseToken();
+      setTimeout(() => {
+        fetchFirebaseToken();
+      }, 3000);
 
       /* navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Vibration Sample", {
